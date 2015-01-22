@@ -1,132 +1,51 @@
-import random, time
+import random
 
-currPlayerHitToken = True
-currOpponentHitToken = True
+standardDeckChoices = ['2','3','4','5','6','7','8','9','10','J','Q','K','A']
 
-class GenerateMonster():
-    def __init__(self, name, health, gold, weapon, ac):
+class GeneratePlayer():
+    def __init__(self, name, money, hand):
         self.name = name
-        self.health = health
-        self.gold = gold
-        self.weapon = weapon
-        self.ac = ac
+        self.money = money
+        self.hand = hand
 
-def checkMissPlayer(defender):
+def drawCards(deck):
 	"""
 
-	Returns a boolean token: if player missed or not.
-
-	If defenders AC (Armor Class) is above players hit the token will evaluate to False,
-	and the player will respectively miss.
+	Accepts param of current deck in use,
+	Returns two cards from aforementioned deck
 
 	"""
 
-	global currPlayerHitToken
-	missChance = random.randrange(0, 25)
+	card1 = deck[random.randrange(0, len(deck))]
+	card2 = deck[random.randrange(0, len(deck))]
 
-	if missChance <= defender:
-		currPlayerHitToken = False
-		return currPlayerHitToken
-	else:
-		currPlayerHitToken = True
-		return currPlayerHitToken
+	return card1, card2
 
-def checkMissOpponent(defender):
+def highCard(p1name, p2name, p1hand, p2hand):
 	"""
 
-	Returns a boolean token: if opponent missed or not.
-
-	If defenders AC (Armor Class) is above opponents hit, the token will evaluate to False,
-	and the opponent will respectively miss.
-
-	"""
-
-	global currOpponentHitToken
-	missChance = random.randrange(0, 25) # make this variable
-
-	if missChance <= defender:
-		currOpponentHitToken = False
-		return currOpponentHitToken
-	else:
-		currPlayerHitToken = True
-		return currOpponentHitToken
-
-def determineDamage(weapon, modifier, directed):
-	"""
-
-	Returns an integer: damage inflicted by the weapon.
-
-	Relative to the player/opponent's weapon, inflictDamage is called and the function's
-	effects to the opposing's HP is calculated.
+	Accepts params of player names & player hands.
+	Runs a card comparison algorithm to determine winner.
+	Returns winner, and their name, respectively.
 
 	"""
+	player1 = list(p1hand)
+	player2 = list(p2hand)
 
-	if weapon == "fists" or weapon == "claws":
-		return inflictDamage(player, 2 * modifier, 6 * modifier)
-	elif weapon == "Iron Broadsword":
-		return inflictDamage(opponent, 100, 250)
-	return
+	#just a test conditional
+	if player1[0] == "A" or player1[1] == "A":
+		print("%s wins!" % p1name)
 
-def inflictDamage(inflicted, min, max):
-	"""
-
-	Returns damage inflicted to determineDamage: which is called in main().
-
-	"""
-	damageInflicted = random.randrange(min, max+1)
-	if damageInflicted == 0:
-		return 'Miss!'
-	else:
-		inflicted.health-=damageInflicted
-		return damageInflicted
-
-def getWinner(player, enemy):
-	"""
-
-	Returns winner of the match by comparing object's HP attribute once knocked below zero.
-
-	"""
-
-	if player.health > enemy.health:
-		print player.name, 'wins!'
-	else:
-		print enemy.name, 'wins!'
-
-def getHP(character):
-	return character.health
-
-
-
-
-opponent = GenerateMonster('Goblin King', 1000, 100, 'fists', 15)
-player = GenerateMonster('Paladin', 150, 200, 'Iron Broadsword', 15)
 
 def main():
+	testPlayer1 = GeneratePlayer("TJ Steele", 500, drawCards(standardDeckChoices))
+	testPlayer2 = GeneratePlayer("Jason Schindler", 500, drawCards(standardDeckChoices))
 
-	playerInitialHealth = player.health
-	opponentInitialHealth = opponent.health
+	#print testPlayer1.name, list(testPlayer1.hand)
+	#print testPlayer2.name, list(testPlayer2.hand)
 
-	while (opponent.health >= 0) and (player.health >= 0):
+	highCard(testPlayer1.name, testPlayer2.name, testPlayer1.hand, testPlayer2.hand)
 
-		time.sleep(1)
-
-		if (currPlayerHitToken):
-			print "%s HP:" % player.name, getHP(player)
-			print "Damage to %s:" % opponent.name, determineDamage(player.weapon, 1, opponent.health)
-		else:
-			print '%s HP:' % player.name, getHP(player)
-	   		print '%s missed!' % player.name
-
-		time.sleep(1)
-
-	   	if(currOpponentHitToken):
-	   		print "%s HP:" % opponent.name, getHP(opponent)
-	   		print "Damage to: %s" % player.name, determineDamage(opponent.weapon, 1, player.health)
-	   	else:
-	   		print "%s HP:" % opponent.name, getHP(opponent)
-	   		print '%s missed!' % opponent.name
-
-	getWinner(player, opponent)
 
 if __name__ == "__main__":
 	main()
