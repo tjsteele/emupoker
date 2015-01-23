@@ -32,7 +32,6 @@ def highCard(p1name, p2name, p1hand, p2hand):
 	player1 = list(p1hand)
 	player2 = list(p2hand)
 
-	#just a test conditional
 	if player1[0] == "A" or player1[1] == "A":
 		print("%s wins!" % p1name)
 
@@ -40,9 +39,6 @@ def highCard(p1name, p2name, p1hand, p2hand):
 def main():
 	testPlayer1 = GeneratePlayer("TJ Steele", 500, drawCards(standardDeckChoices))
 	testPlayer2 = GeneratePlayer("Jason Schindler", 500, drawCards(standardDeckChoices))
-
-	#print testPlayer1.name, list(testPlayer1.hand)
-	#print testPlayer2.name, list(testPlayer2.hand)
 
 	highCard(testPlayer1.name, testPlayer2.name, testPlayer1.hand, testPlayer2.hand)
 
